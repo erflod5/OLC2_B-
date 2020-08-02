@@ -1,1 +1,14 @@
+
 /* You can add global styles to this file, and also import other style files */
+@import "~codemirror/lib/codemirror";
+
+@import '~codemirror/theme/twilight'; /* preferido para edito*/
+@import '~codemirror/theme/abcdef';  /* Preferido para c3d*/
+@import '~codemirror/theme/base16-dark';  
+@import '~codemirror/theme/panda-syntax';
+
+@import '~codemirror/theme/mbo';
+@import '~codemirror/theme/dracula'; 
+@import '~codemirror/theme/blackboard';  
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
