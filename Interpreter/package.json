@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "jison": "jison ./src/app/grammar/grammar.jison && mv grammar.js ./src/app/grammar/"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +23,7 @@
     "@ctrl/ngx-codemirror": "^4.0.0",
     "bootstrap": "^4.5.0",
     "codemirror": "^5.56.0",
+    "jison": "^0.4.18",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

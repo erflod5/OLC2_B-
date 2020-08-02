@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import * as CodeMirror from 'codemirror';
-
+import Parser from '../app/grammar/grammar'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,6 +19,7 @@ export class AppComponent {
   };
 
   ejecutar(){
-    this.salida = this.entrada;
+    const value = Parser.parse(this.entrada);
+    this.salida = value + '';
   }
 }
