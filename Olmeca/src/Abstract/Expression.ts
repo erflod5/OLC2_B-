@@ -1,3 +1,5 @@
+import { Retorno } from "./Retorno";
+import { Environment } from "../Symbol/Environment";
 
 export abstract class Expression {
 
@@ -9,6 +11,6 @@ export abstract class Expression {
         this.column = column;
     }
 
-    public abstract execute() : number;
+    public abstract execute(environment: Environment) : Retorno;
 
 }

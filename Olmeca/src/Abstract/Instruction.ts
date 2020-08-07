@@ -1,5 +1,6 @@
+import { Environment } from "../Symbol/Environment";
 
-export abstract class Expression {
+export abstract class Instruction {
 
     private line: number;
     private column: number;
@@ -9,6 +10,6 @@ export abstract class Expression {
         this.column = column;
     }
 
-    public abstract execute() : number;
+    public abstract execute(environment : Environment) : any;
 
 }
