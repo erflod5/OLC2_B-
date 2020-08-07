@@ -17,6 +17,7 @@ export class Arithmetic extends Expression{
         const leftValue = this.left.execute();
         const rightValue = this.right.execute();
 
+        //TODO un todo
         if(this.type == ArithmeticOption.PLUS){
             return leftValue + rightValue;
         }
@@ -27,7 +28,9 @@ export class Arithmetic extends Expression{
             return leftValue * rightValue;
         }
         else{
-            //TODO validar division entre 0
+            if(rightValue == 0){
+                throw new Error("No se puede dividir entre 0");
+            }
             return leftValue / rightValue;
         }
     }
