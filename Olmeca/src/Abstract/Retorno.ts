@@ -1,7 +1,8 @@
 export enum Type{
     NUMBER,
     STRING,
-    BOOLEAN
+    BOOLEAN,
+    NULL
 }
 
 export type Retorno ={

@@ -24,6 +24,10 @@ export class Relational extends Expression{
             const result = leftValue.value == rightValue.value;
             return {value : result, type : Type.BOOLEAN};
         }
+        else if(this.type == RelationalOption.NOTEQUAL){
+            const result = leftValue.value != rightValue.value;
+            return {value : result, type : Type.BOOLEAN};
+        }
         return {value:0, type : Type.NUMBER}
     }
 }

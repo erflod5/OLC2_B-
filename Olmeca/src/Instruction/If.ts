@@ -17,10 +17,10 @@ export class If extends Instruction{
         }
 
         if(condition.value == true){
-            this.code.execute(env);
+            return this.code.execute(env);
         }
         else{
-            this.elsSt?.execute(env);
+            return this.elsSt?.execute(env);
         }
     }
 }

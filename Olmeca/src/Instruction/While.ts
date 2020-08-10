@@ -16,7 +16,14 @@ export class While extends Instruction{
         }
 
         while(condition.value == true){
-            this.code.execute(env);
+            const element = this.code.execute(env);
+            if(element != null || element != undefined){
+                console.log(element);
+                if(element.type == 'Break')
+                    break;
+                else if(element.type == 'Continue')
+                    continue;
+            }
             condition = this.condition.execute(env);
             if(condition.type != Type.BOOLEAN){
                 throw {error: "La condicion no es booleana", linea: this.line, columna : this.column};

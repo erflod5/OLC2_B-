@@ -1,5 +1,7 @@
 import { Instruction } from "./Abstract/Instruction";
 import { Environment } from "./Symbol/Environment";
+import { errores } from './Errores';
+import { Error_ } from "./Error";
 
 const parser = require('./Grammar/Grammar');
 const fs = require('fs');
@@ -10,13 +12,26 @@ try {
     const env = new Environment(null);
     for(const instr of ast){
         try {
-            instr.execute(env);
-            
+            const actual = instr.execute(env);
+            if(actual != null || actual != undefined){
+                errores.push(new Error_(actual.line, actual.column, 'Semantico', actual.type + ' fuera de un ciclo'));
+            }
         } catch (error) {
-            console.error(error);        
+            errores.push(error);  
         }
     }
-} 
+}
 catch (error) {
     console.log(error);
 }
+
+console.log(errores);
+
+
+//Java
+// int x = 10;
+
+// x = 10;
+// x = "hola";
+
+//JS

@@ -9,6 +9,7 @@
     const {Statement} = require('../Instruction/Statement');
     const {While} = require('../Instruction/While');
     const {Declaration} = require('../Instruction/Declaration');
+    const {Break} = require('../Instruction/Break');
 %}
 
 %lex
@@ -47,6 +48,7 @@ string  (\"[^"]*\")
 "else"                  return 'ELSE'
 "while"                 return 'WHILE'
 "print"                 return 'PRINT'
+"break"                 return 'BREAK'
 
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*	return 'ID';
 <<EOF>>		            return 'EOF'
@@ -98,6 +100,9 @@ Instruction
     | Declaration{
         $$ = $1;
     }
+    | 'BREAK' ';'{
+        $$ = new Break(@1.first_line, @1.first_column);
+    }
 ;
 
 Declaration 
@@ -127,7 +132,7 @@ ElseSt
 
 WhileSt
     : 'WHILE' '(' Expr ')' Statement{
-        $$ = new While($1, $5, @1.first_line, @1.first_column);
+        $$ = new While($3, $5, @1.first_line, @1.first_column);
     }
 ;
 
