@@ -32,19 +32,3 @@ Lista
         $$ = Number($1);
     }
 ;
-
-L
-    : NUMBER LPRIMA{
-        $$ = $1 * $2.base + $2.number;
-    }
-;
-
-LPRIMA 
-    : NUMBER LPRIMA{
-        $$ = {base: $2.base * 10, number: $2.number + $1 * $2.base};
-    }
-    | /*epsilon*/
-    {
-        $$ = {base: 1, number: 0}  
-    }
-;

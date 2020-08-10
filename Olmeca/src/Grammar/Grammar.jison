@@ -2,11 +2,13 @@
 %{
     const {Arithmetic, ArithmeticOption} = require('../Expression/Arithmetic');
     const {Relational, RelationalOption} = require('../Expression/Relational');
+    const {Access} = require('../Expression/Access');
     const {Literal} = require('../Expression/Literal');
     const {If} = require('../Instruction/If');
     const {Print} = require('../Instruction/Print');
     const {Statement} = require('../Instruction/Statement');
     const {While} = require('../Instruction/While');
+    const {Declaration} = require('../Instruction/Declaration');
 %}
 
 %lex
@@ -45,7 +47,10 @@ string  (\"[^"]*\")
 "else"                  return 'ELSE'
 "while"                 return 'WHILE'
 "print"                 return 'PRINT'
+
+([a-zA-Z_])[a-zA-Z0-9_ñÑ]*	return 'ID';
 <<EOF>>		            return 'EOF'
+
 
 /lex
 
@@ -89,6 +94,15 @@ Instruction
     }
     | PrintSt {
         $$ = $1;
+    }
+    | Declaration{
+        $$ = $1;
+    }
+;
+
+Declaration 
+    : ID '=' Expr ';'{
+        $$ = new Declaration($1, $3, @1.first_line, @1.first_column);
     }
 ;
 
@@ -195,5 +209,8 @@ F   : '(' Expr ')'
     | STRING
     {
         $$ = new Literal($1.replace(/\"/g,""), @1.first_line, @1.first_column, 2);
+    }
+    | ID{
+        $$ = new Access($1, @1.first_line, @1.first_column);
     }
 ;

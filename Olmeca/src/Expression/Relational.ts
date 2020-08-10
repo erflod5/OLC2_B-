@@ -20,7 +20,10 @@ export class Relational extends Expression{
     public execute(environment : Environment) : Retorno{
         const leftValue = this.left.execute(environment);
         const rightValue = this.right.execute(environment);
-
+        if(this.type == RelationalOption.EQUAL){
+            const result = leftValue.value == rightValue.value;
+            return {value : result, type : Type.BOOLEAN};
+        }
         return {value:0, type : Type.NUMBER}
     }
 }

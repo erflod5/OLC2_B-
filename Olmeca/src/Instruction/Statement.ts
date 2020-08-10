@@ -1,4 +1,5 @@
 import { Instruction } from "../Abstract/Instruction";
+import { Environment } from "../Symbol/Environment";
 
 export class Statement extends Instruction{
 
@@ -6,7 +7,11 @@ export class Statement extends Instruction{
         super(line, column);
     }
 
-    public execute() {
-        
+    public execute(env : Environment) {
+        const newEnv = new Environment(env);
+        for(const instr of this.code){
+            instr.execute(newEnv);
+        }
+
     }
 }
