@@ -1,2 +1,5 @@
-print("hola mundo" + 10);
-print(10 + 32);
+x = 0;
+while(x != 10){
+    print(x);
+    x = x + 1;
+}
