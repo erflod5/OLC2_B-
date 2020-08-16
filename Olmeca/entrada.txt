@@ -1,1 +1,2 @@
-print("hola mundo" - 10);
+print("hola mundo" + 10);
+print(10 + 32);
