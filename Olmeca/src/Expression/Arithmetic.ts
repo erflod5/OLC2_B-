@@ -26,9 +26,10 @@ export class Arithmetic extends Expression{
         if(this.type == ArithmeticOption.PLUS){
             if(tipoDominante == Type.STRING)
                 result = {value : (leftValue.value.toString() + rightValue.value.toString()), type : Type.NUMBER};
-            else(tipoDominante == Type.NUMBER)
+            else if(tipoDominante == Type.NUMBER)
                 result = {value : (leftValue.value + rightValue.value), type : Type.NUMBER};
-            
+            else
+                throw new Error_(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);            
         }
         else if(this.type == ArithmeticOption.MINUS){
             if(tipoDominante == Type.STRING)

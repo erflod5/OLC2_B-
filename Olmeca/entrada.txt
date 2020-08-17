@@ -1,5 +1,7 @@
-x = 0;
-while(x != 10){
-    print(x);
-    x = x + 1;
+
+function fact(a, b, c){
+    a = 20;
+    print(a + b + c);
 }
+
+fact(10, 11, 12);

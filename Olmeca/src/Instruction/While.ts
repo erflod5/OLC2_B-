@@ -14,7 +14,6 @@ export class While extends Instruction{
         if(condition.type != Type.BOOLEAN){
             throw {error: "La condicion no es booleana", linea: this.line, columna : this.column};
         }
-
         while(condition.value == true){
             const element = this.code.execute(env);
             if(element != null || element != undefined){

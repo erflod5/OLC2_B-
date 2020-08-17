@@ -10,6 +10,8 @@
     const {While} = require('../Instruction/While');
     const {Declaration} = require('../Instruction/Declaration');
     const {Break} = require('../Instruction/Break');
+    const {Call} = require('../Instruction/Call');
+    const {Function} = require('../Instruction/Function');
 %}
 
 %lex
@@ -26,6 +28,7 @@ string  (\"[^"]*\")
 "*"                     return '*'
 "/"                     return '/'
 ";"                     return ';'
+","                     return ','
 "-"                     return '-'
 "+"                     return '+'
 
@@ -49,6 +52,7 @@ string  (\"[^"]*\")
 "while"                 return 'WHILE'
 "print"                 return 'PRINT'
 "break"                 return 'BREAK'
+"function"              return 'FUNCTION'
 
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*	return 'ID';
 <<EOF>>		            return 'EOF'
@@ -102,6 +106,50 @@ Instruction
     }
     | 'BREAK' ';'{
         $$ = new Break(@1.first_line, @1.first_column);
+    }
+    | FunctionSt {
+        $$ = $1;
+    }
+    | Call ';'{
+
+    }
+;
+
+Call
+    : ID '(' ')' {
+        $$ = new Call($1, [], @1.first_line, @1.first_column);
+    }
+    | ID '(' ListaExpr ')' {
+        $$ = new Call($1, $3, @1.first_line, @1.first_column);
+    }
+;
+
+ListaExpr 
+    : ListaExpr ',' Expr{
+        $1.push($3);
+        $$ = $1;
+    }
+    | Expr{
+        $$ = [$1];
+    }
+;    
+
+FunctionSt 
+    : 'FUNCTION' ID '(' ')' Statement {
+        $$ = new Function($2, $5, [], @1.first_line, @1.first_column);
+    }
+    | 'FUNCTION' ID '(' Parametros ')' Statement {
+        $$ = new Function($2, $6, $4, @1.first_line, @1.first_column);
+    }
+;
+
+Parametros
+    : Parametros ',' ID {
+        $1.push($3);
+        $$ = $1;
+    }
+    | ID{
+        $$ = [$1];
     }
 ;
 
