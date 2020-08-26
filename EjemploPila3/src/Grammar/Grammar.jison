@@ -11,21 +11,22 @@ T
     console.log("T -> F T' ("+yytext+")");
     var s =  eval('$$');
     console.log(s);
-	$$ = $2;
-	return $$;
+	  $$ = $2;
+	  return $$;
   }
 ;
 
 T_
   : '*' F T_ {
-    console.log("T -> * F T' ("+yytext+")");
+    console.log("T' -> * F T' ("+yytext+")");
     var s =  eval('$$');
     console.log(s);
 	$$ = s[s.length-4] * $3;
   }
   | /*e*/{
-    console.log("T -> epsilon ' ("+yytext+")");
+    console.log("T' -> epsilon ' ("+yytext+")");
     var s =  eval('$$');
+    console.log(s);
     $$ = s[s.length - 1];
   }
 ;

@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "dev": "nodemon",
     "jison": "jison ./src/Grammar/Grammar.jison && mv Grammar.js ./src/Grammar/",
-    "dev1" : "ts-node ./src/"
+    "dev1": "ts-node ./src/"
   },
   "author": "",
   "license": "ISC",

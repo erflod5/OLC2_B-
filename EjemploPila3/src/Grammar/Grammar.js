@@ -94,7 +94,7 @@ case 1:
 break;
 case 2:
 
-    console.log("T -> * F T' ("+yytext+")");
+    console.log("T' -> * F T' ("+yytext+")");
     var s =  eval('$$');
     console.log(s);
 	this.$ = s[s.length-4] * $$[$0];
@@ -102,8 +102,9 @@ case 2:
 break;
 case 3:
 
-    console.log("T -> epsilon ' ("+yytext+")");
+    console.log("T' -> epsilon ' ("+yytext+")");
     var s =  eval('$$');
+    console.log(s);
     this.$ = s[s.length - 1];
   
 break;

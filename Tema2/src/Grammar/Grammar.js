@@ -93,6 +93,8 @@ case 1:
 break;
 case 2:
 
+        console.log($$[$0-2]);
+        console.log($$[$0]);
         if($$[$0-2].operador != '+'){
             this.$ = {value : `${$$[$0-2].value}, ${$$[$0].value}`, operador : '+'};
         }
