@@ -1,0 +1,36 @@
+digraph grafica{
+rankdir=TB;
+node [shape = record, style=filled, fillcolor=seashell2];
+nodo5 [ label ="<C0>|*|<C1>"];
+nodo3 [ label ="<C0>|*|<C1>"];
+nodo1 [ label ="*"];
+nodo3:C0->nodo1
+nodo2 [ label ="*"];
+nodo3:C1->nodo2
+nodo5:C0->nodo3
+nodo4 [ label ="*"];
+nodo5:C1->nodo4
+"Arbol 1, altura 3"}
+
+
+
+digraph grafica{
+rankdir=TB;
+node [shape = record, style=filled, fillcolor=seashell2];
+nodo12 [ label ="<C0>|*|<C1>"];
+nodo6 [ label ="*"];
+nodo12:C0->nodo6
+nodo11 [ label ="<C0>|*|<C1>"];
+nodo7 [ label ="*"];
+nodo11:C0->nodo7
+nodo10 [ label ="<C0>|*|<C1>"];
+nodo8 [ label ="*"];
+nodo10:C0->nodo8
+nodo9 [ label ="*"];
+nodo10:C1->nodo9
+nodo11:C1->nodo10
+nodo12:C1->nodo11
+"Arbol 2, altura 2"}
+
+
+

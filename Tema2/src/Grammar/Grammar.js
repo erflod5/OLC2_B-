@@ -72,12 +72,12 @@
   }
 */
 var Grammar = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,6],$V2=[1,8],$V3=[5,6,11],$V4=[1,9],$V5=[5,6,8,11];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,8],$V2=[5,9,10];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"Init":3,"E":4,"EOF":5,"+":6,"T":7,"*":8,"F":9,"(":10,")":11,"id":12,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",6:"+",8:"*",10:"(",11:")",12:"id"},
-productions_: [0,[3,2],[4,3],[4,1],[7,3],[7,1],[9,3],[9,1]],
+symbols_: {"error":2,"S":3,"INICIO":4,"EOF":5,"number":6,"ARBOLES":7,"ARBOL":8,"*":9,".":10,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",6:"number",9:"*",10:"."},
+productions_: [0,[3,2],[4,2],[7,2],[7,1],[8,3],[8,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -85,61 +85,45 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
 
-        if($$[$0-1].operador  != '+')
-            return $$[$0-1].value;
-        else
-            return $$[$0-1].value + ')';
-    
+    return salida;
+
 break;
 case 2:
 
-        console.log($$[$0-2]);
-        console.log($$[$0]);
-        if($$[$0-2].operador != '+'){
-            this.$ = {value : `${$$[$0-2].value}, ${$$[$0].value}`, operador : '+'};
+        if($$[$0] == Number($$[$0-1])){
+            console.log("La cantidad de árboles es correcta");
         }
         else{
-            this.$ = { value : `SUM(${$$[$0-2].value}, ${$$[$0].value}`, operador : '+'};
+            console.log("La cantidad de árboles es incorrecta");
         }
     
 break;
 case 3:
 
-        if($$[$0].operador == '*')
-            this.$ = {value : `${$$[$0].value} )`, operador : '0'};
-        else
-            this.$ = $$[$0];
+        imprime_arbol($$[$0], $$[$0-1] + 1);
+        this.$ = $$[$0-1] + 1;
     
 break;
 case 4:
 
-        if($$[$0-2].operador != '*'){
-            this.$ = {value : `${$$[$0-2].value}, ${$$[$0].value}`, operador : '*'};
-        }
-        else{
-            this.$ = { value : `MUL(${$$[$0-2].value}, ${$$[$0].value}`, operador : '*'};
-        }
+        imprime_arbol($$[$0], 1);
+        this.$ = 1;
     
 break;
 case 5:
- 
-        this.$ = { value : $$[$0].value, operador : '0'};
+
+        this.$ = { nodo : crea_nodo('*', $$[$0-1].nodo, $$[$0].nodo), altura : ($$[$0-2].altura > $$[$0-1].altura ? $$[$0-2].altura : $$[$0-1].altura) + 1};
     
 break;
 case 6:
- 
-        this.$ = {value: $$[$0-1].value };
-    
-break;
-case 7:
- 
-        this.$ = { value: $$[$0]};
+
+        this.$ = {altura : 0, nodo : null};
     
 break;
 }
 },
-table: [{3:1,4:2,7:3,9:4,10:$V0,12:$V1},{1:[3]},{5:[1,7],6:$V2},o($V3,[2,3],{8:$V4}),o($V5,[2,5]),{4:10,7:3,9:4,10:$V0,12:$V1},o($V5,[2,7]),{1:[2,1]},{7:11,9:4,10:$V0,12:$V1},{9:12,10:$V0,12:$V1},{6:$V2,11:[1,13]},o($V3,[2,2],{8:$V4}),o($V5,[2,4]),o($V5,[2,6])],
-defaultActions: {7:[2,1]},
+table: [{3:1,4:2,6:[1,3]},{1:[3]},{5:[1,4]},{7:5,8:6,9:$V0,10:$V1},{1:[2,1]},{5:[2,2],8:9,9:$V0,10:$V1},o($V2,[2,4]),{8:10,9:$V0,10:$V1},o($V2,[2,6]),o($V2,[2,3]),{8:11,9:$V0,10:$V1},o($V2,[2,5])],
+defaultActions: {4:[2,1]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -287,6 +271,47 @@ parse: function parse(input) {
     return true;
 }};
 
+    let contador = 0;
+    let salida = '';
+    function imprime_arbol(puntero, numero){
+        console.log(`Arbol ${numero}, altura ${puntero.altura}`)
+        if(puntero.nodo != null){
+            salida += getCodigoGraphviz(puntero, numero);        
+        }
+    }
+
+    function crea_nodo(simbolo, puntero1, puntero2){
+        contador++;
+        return {simbolo : simbolo, izquierda : puntero1, derecha : puntero2, id : contador};
+    }
+
+    function getCodigoGraphviz(raiz, numero) {
+        return "digraph grafica{\n" +
+               "rankdir=TB;\n" +
+               "node [shape = record, style=filled, fillcolor=seashell2];\n"+
+                getCodigoInterno(raiz.nodo)+ `"Arbol ${numero}, altura ${raiz.altura}"` +
+                "}\n\n\n\n";
+    }
+
+    function getCodigoInterno(raiz) {
+        let etiqueta = '';
+        if(raiz.izquierda == null && raiz.derecha ==null){
+            etiqueta = "nodo"+raiz.id+" [ label =\""+raiz.simbolo+"\"];\n";
+        }else{
+            etiqueta = "nodo"+raiz.id+" [ label =\"<C0>|"+raiz.simbolo+"|<C1>\"];\n";
+        }
+
+        if(raiz.izquierda != null){
+            etiqueta = etiqueta + getCodigoInterno(raiz.izquierda) +
+               "nodo" + raiz.id + ":C0->nodo"+ raiz.izquierda.id + "\n";
+        }
+        
+        if(raiz.derecha != null){
+            etiqueta = etiqueta + getCodigoInterno(raiz.derecha) +
+               "nodo"+ raiz.id +":C1->nodo"+raiz.derecha.id+"\n";                    
+        }
+        return etiqueta;
+    }
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
 var lexer = ({
@@ -617,26 +642,18 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1: return 12; 
+case 1:return 6
 break;
-case 2:return 8
+case 2:return 9
 break;
-case 3:return '/'
+case 3:return 10
 break;
-case 4:return '-'
-break;
-case 5:return 6
-break;
-case 6:return 10
-break;
-case 7:return 11 
-break;
-case 8:return 5
+case 4:return 5
 break;
 }
 },
-rules: [/^(?:\s+)/i,/^(?:[a-zA-Z_]\w*)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:-)/i,/^(?:\+)/i,/^(?:\()/i,/^(?:\))/i,/^(?:$)/i],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8],"inclusive":true}}
+rules: [/^(?:\s+)/i,/^(?:([0-9]+))/i,/^(?:\*)/i,/^(?:\.)/i,/^(?:$)/i],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4],"inclusive":true}}
 });
 return lexer;
 })();

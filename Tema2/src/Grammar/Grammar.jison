@@ -1,78 +1,98 @@
  
 %{
+    let contador = 0;
+    let salida = '';
+    function imprime_arbol(puntero, numero){
+        console.log(`Arbol ${numero}, altura ${puntero.altura}`)
+        if(puntero.nodo != null){
+            salida += getCodigoGraphviz(puntero, numero);        
+        }
+    }
+
+    function crea_nodo(simbolo, puntero1, puntero2){
+        contador++;
+        return {simbolo : simbolo, izquierda : puntero1, derecha : puntero2, id : contador};
+    }
+
+    function getCodigoGraphviz(raiz, numero) {
+        return "digraph grafica{\n" +
+               "rankdir=TB;\n" +
+               "node [shape = record, style=filled, fillcolor=seashell2];\n"+
+                getCodigoInterno(raiz.nodo)+ `"Arbol ${numero}, altura ${raiz.altura}"` +
+                "}\n\n\n\n";
+    }
+
+    function getCodigoInterno(raiz) {
+        let etiqueta = '';
+        if(raiz.izquierda == null && raiz.derecha ==null){
+            etiqueta = "nodo"+raiz.id+" [ label =\""+raiz.simbolo+"\"];\n";
+        }else{
+            etiqueta = "nodo"+raiz.id+" [ label =\"<C0>|"+raiz.simbolo+"|<C1>\"];\n";
+        }
+
+        if(raiz.izquierda != null){
+            etiqueta = etiqueta + getCodigoInterno(raiz.izquierda) +
+               "nodo" + raiz.id + ":C0->nodo"+ raiz.izquierda.id + "\n";
+        }
+        
+        if(raiz.derecha != null){
+            etiqueta = etiqueta + getCodigoInterno(raiz.derecha) +
+               "nodo"+ raiz.id +":C1->nodo"+raiz.derecha.id+"\n";                    
+        }
+        return etiqueta;
+    }
 %}
+
 
 %lex
 %options case-insensitive
+number [0-9]+
 %%
-\s+                   /* skip whitespace */
 
-[a-zA-Z_]\w*          { return 'id'; }
+\s+                   /* skip whitespace */
+{number}              return 'number'
 "*"                   return '*'
-"/"                   return '/'
-"-"                   return '-'
-"+"                   return '+'
-"("                   return '('
-")"                   return ')' 
+"."                   return '.'
+
 <<EOF>>		          return 'EOF'
 
 /lex
 
-%start Init
+%start S
 
 %%
 
-Init    
-    : E EOF 
-    {
-        if($1.operador  != '+')
-            return $1.value;
-        else
-            return $1.value + ')';
-    } 
-;
+S : INICIO EOF{
+    return salida;
+};
 
-E
-    : E '+' T
-    {
-        if($1.operador != '+'){
-            $$ = {value : `${$1.value}, ${$3.value}`, operador : '+'};
+INICIO 
+    : number ARBOLES{
+        if($2 == Number($1)){
+            console.log("La cantidad de árboles es correcta");
         }
         else{
-            $$ = { value : `SUM(${$1.value}, ${$3.value}`, operador : '+'};
+            console.log("La cantidad de árboles es incorrecta");
         }
-    } 
-    | T
-    {
-        if($1.operador == '*')
-            $$ = {value : `${$1.value} )`, operador : '0'};
-        else
-            $$ = $1;
     }
 ;
 
-T   
-    : T '*' F
-    {
-        if($1.operador != '*'){
-            $$ = {value : `${$1.value}, ${$3.value}`, operador : '*'};
-        }
-        else{
-            $$ = { value : `MUL(${$1.value}, ${$3.value}`, operador : '*'};
-        }
-    }       
-    | F
-    { 
-        $$ = { value : $1.value, operador : '0'};
+ARBOLES
+    : ARBOLES ARBOL{
+        imprime_arbol($2, $1 + 1);
+        $$ = $1 + 1;
+    }
+    | ARBOL {
+        imprime_arbol($1, 1);
+        $$ = 1;
     }
 ;
 
-F   : '(' E ')'
-    { 
-        $$ = {value: $2.value };
+ARBOL
+    : "*" ARBOL ARBOL {
+        $$ = { nodo : crea_nodo('*', $2.nodo, $3.nodo), altura : ($1.altura > $2.altura ? $1.altura : $2.altura) + 1};
     }
-    | id
-    { 
-        $$ = { value: $1};
+    | "." {
+        $$ = {altura : 0, nodo : null};
     }
 ;
