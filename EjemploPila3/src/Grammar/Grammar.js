@@ -86,11 +86,21 @@ switch (yystate) {
 case 1:
  this.$ = { val: $$[$0-1].val}; return this.$; 
 break;
-case 2: case 6:
- s = eval('$$'); this.$ = { val: $$[$0].val}; 
+case 2:
+
+    console.log("T' -> * F T' ("+yytext+")");
+    var s =  eval('$$');
+    console.log(s);
+	this.$ = s[s.length-4] * $$[$0];
+  
 break;
 case 3:
- s = eval('$$'); this.$ = { val: s[s.length-4].val + $$[$0].val}; 
+
+    console.log("T' -> epsilon ' ("+yytext+")");
+    var s =  eval('$$');
+    console.log(s);
+    this.$ = s[s.length - 1];
+  
 break;
 case 4:
  s = eval('$$'); this.$ = { val: s[s.length-4].val - $$[$0].val}; 

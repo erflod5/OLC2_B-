@@ -72,12 +72,12 @@
   }
 */
 var Grammar = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,8],$V1=[1,10],$V2=[7,9];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,8],$V1=[2,5],$V2=[1,11],$V3=[7,11];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"RAIZ":3,"PRIMERO":4,"[":5,"HIJOS":6,"]":7,"id":8,",":9,"HIJO":10,"ID":11,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"[",7:"]",8:"id",9:","},
-productions_: [0,[3,4],[4,1],[6,3],[6,1],[10,1],[10,4],[11,1]],
+symbols_: {"error":2,"RAIZ":3,"PRIMERO":4,"[":5,"LISTA":6,"]":7,"id":8,"HIJO":9,"LISTAPRIMA":10,",":11,"ID":12,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"[",7:"]",8:"id",11:","},
+productions_: [0,[3,4],[4,1],[6,2],[10,3],[10,0],[9,1],[9,4],[12,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -92,55 +92,58 @@ case 1:
 break;
 case 2:
 
-    this.$ = $$[$0];
+    //this.$ = 'global_' + $$[$0];
   
 break;
 case 3:
 
+    console.log(`LISTA -> HIJO LISTAPRIMA ${$$[$0-1]}`);
     var s =  eval('$$');
-    var parent = s[s.length - 5];
-    console.log(`Soy (${$$[$0]}) y mi padre es (${parent})`);
+    console.log(s);
+    //var parent = s[s.length - 5];
+    //console.log(`Soy (${$$[$01]}) y mi padre es (${parent})`);
   
 break;
 case 4:
 
+    console.log(`LISTAPRIMA -> HIJO LISTAPRIMA ${$$[$0-2]}`);
     var s =  eval('$$');
-    var parent = s[s.length - 3];
-    console.log(`Soy (${$$[$0]}) y mi padre es (${parent})`);
+    console.log(s);
   
 break;
 case 5:
 
-    /*console.log("HIJO -> ID ("+yytext+")");
+    console.log(`LISTAPRIMA -> epsilon`);
     var s =  eval('$$');
-    console.log(s);*/
-    this.$ = $$[$0];
+    console.log(s);
   
 break;
 case 6:
 
-  /*console.log("HIJO -> ID '[' HIJOS ']' ("+yytext+")");
+    console.log(`HIJO -> ID ${$$[$0]}`);
     var s =  eval('$$');
-    console.log(s);*/
-    this.$ = $$[$0-3];
+    console.log(s);
+
   
 break;
 case 7:
 
+    console.log(`HIJO -> ID [ HIJOS ] ${$$[$0-3]}`);
     var s =  eval('$$');
-    var indice = s[s.length - 2];
-    if(indice == ','){
-      this.$ = s[s.length - 5] + '_' + $$[$0];
-    }
-    else{
-      this.$ = s[s.length - 3] + '_' + $$[$0];
-    }
+    console.log(s);
+  
+break;
+case 8:
+
+    console.log(`ID -> id ${$$[$0]}`);
+    var s =  eval('$$');
+    console.log(s);
   
 break;
 }
 },
-table: [{3:1,4:2,8:[1,3]},{1:[3]},{5:[1,4]},{5:[2,2]},{6:5,8:$V0,10:6,11:7},{7:[1,9],9:$V1},o($V2,[2,4]),o($V2,[2,5],{5:[1,11]}),o([5,7,9],[2,7]),{1:[2,1]},{8:$V0,10:12,11:7},{6:13,8:$V0,10:6,11:7},o($V2,[2,3]),{7:[1,14],9:$V1},o($V2,[2,6])],
-defaultActions: {3:[2,2],9:[2,1]},
+table: [{3:1,4:2,8:[1,3]},{1:[3]},{5:[1,4]},{5:[2,2]},{6:5,8:$V0,9:6,12:7},{7:[1,9]},{7:$V1,10:10,11:$V2},o($V3,[2,6],{5:[1,12]}),o([5,7,11],[2,8]),{1:[2,1]},{7:[2,3]},{8:$V0,9:13,12:7},{6:14,8:$V0,9:6,12:7},{7:$V1,10:15,11:$V2},{7:[1,16]},{7:[2,4]},o($V3,[2,7])],
+defaultActions: {3:[2,2],9:[2,1],10:[2,3],15:[2,4]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);

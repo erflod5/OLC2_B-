@@ -16,7 +16,7 @@ RAIZ
 ;
 
 PRIMERO : id {
-    $$ = $1;
+    $$ = 'global_' + $1;
   }
 ;
 
@@ -35,15 +35,11 @@ HIJOS
 
 HIJO 
   : ID {
-    /*console.log("HIJO -> ID ("+yytext+")");
     var s =  eval('$$');
-    console.log(s);*/
     $$ = $1;
   }
   | ID '[' HIJOS ']'{
-  /*console.log("HIJO -> ID '[' HIJOS ']' ("+yytext+")");
     var s =  eval('$$');
-    console.log(s);*/
     $$ = $1;
   }
 ;
