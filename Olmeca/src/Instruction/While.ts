@@ -20,8 +20,12 @@ export class While extends Instruction{
                 console.log(element);
                 if(element.type == 'Break')
                     break;
-                else if(element.type == 'Continue')
+                else if(element.type == 'Continue'){
+                    condition = this.condition.execute(env);
                     continue;
+                }
+                else
+                    return element;
             }
             condition = this.condition.execute(env);
             if(condition.type != Type.BOOLEAN){

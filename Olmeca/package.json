@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "dev": "nodemon",
-    "jison": "jison ./src/Grammar/Grammar.jison && mv Grammar.js ./src/Grammar/"
+    "jison": "jison ./src/Grammar/Grammar.jison && mv Grammar.js ./src/Grammar/",
+    "build" : "node ./build/"
   },
   "author": "",
   "license": "ISC",
