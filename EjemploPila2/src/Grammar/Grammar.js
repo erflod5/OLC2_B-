@@ -83,25 +83,44 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 
 var $0 = $$.length - 1;
 switch (yystate) {
+case 1:
+
+    console.log('Variables reconocidas: ', $$[$0]);
+  
+break;
+case 2:
+
+    this.$ = 'GLOBAL';
+  
+break;
+case 3:
+
+    this.$ = 'LOCAL';
+  
+break;
+case 4:
+
+    this.$ = 'INT';
+  
+break;
+case 5:
+
+    this.$ = 'FLOAT';
+  
+break;
 case 6:
  
-                  var s =  eval('$$');
-                  var b0 = s.length - 3;
-
-                  console.log("L -> L ',' id ("+yytext+")");
-                  console.log($$[$0] + ' is of type ' + s[b0-1]);
-                  console.log(s[b0] + ' is of class ' + s[b0-2]);
-                
+    var s =  eval('$$');
+    var indice = s.length - 3;
+    $$[$0-2].push({id : $$[$0], tipo : s[indice - 1], ambito : s[indice - 2]});
+  
 break;
 case 7:
 
-                  var s =  eval('$$');
-                  var b0 = s.length - 1;
-
-                  console.log("L -> id ("+yytext+")");
-                  console.log($$[$0] + ' is of type ' + s[b0-1]);
-                  console.log(s[b0] + ' is of class ' + s[b0-2]);
-                
+    var s =  eval('$$');
+    var indice = s.length - 1;
+    this.$ = [ {id : $$[$0], tipo : s[indice - 1], ambito : s[indice - 2]} ];
+  
 break;
 }
 },

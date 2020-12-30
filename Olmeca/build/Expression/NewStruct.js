@@ -13,26 +13,27 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Literal = void 0;
+exports.NewStruct = void 0;
 var Expression_1 = require("../Abstract/Expression");
 var Retorno_1 = require("../Abstract/Retorno");
-var Literal = /** @class */ (function (_super) {
-    __extends(Literal, _super);
-    function Literal(value, line, column, type) {
+var Struct_1 = require("../Symbol/Struct");
+var Symbol_1 = require("../Symbol/Symbol");
+var NewStruct = /** @class */ (function (_super) {
+    __extends(NewStruct, _super);
+    function NewStruct(attributes, line, column) {
         var _this = _super.call(this, line, column) || this;
-        _this.value = value;
-        _this.type = type;
+        _this.attributes = attributes;
         return _this;
     }
-    Literal.prototype.execute = function () {
-        if (this.type <= 1)
-            return { value: Number(this.value), type: Retorno_1.Type.NUMBER };
-        else if (this.type == 2)
-            return { value: this.value, type: Retorno_1.Type.STRING };
-        else
-            return { value: null, type: Retorno_1.Type.NULL };
+    NewStruct.prototype.execute = function (environment) {
+        var struct = new Struct_1.Struct();
+        this.attributes.forEach(function (attribute) {
+            var value = attribute.value.execute(environment);
+            struct.setAttribute(attribute.id, new Symbol_1.Symbol(value.value, attribute.id, value.type));
+        });
+        return { value: struct, type: Retorno_1.Type.STRUCT };
     };
-    return Literal;
+    return NewStruct;
 }(Expression_1.Expression));
-exports.Literal = Literal;
-//# sourceMappingURL=Literal.js.map
+exports.NewStruct = NewStruct;
+//# sourceMappingURL=NewStruct.js.map

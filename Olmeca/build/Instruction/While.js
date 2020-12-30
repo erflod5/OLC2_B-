@@ -35,8 +35,12 @@ var While = /** @class */ (function (_super) {
                 console.log(element);
                 if (element.type == 'Break')
                     break;
-                else if (element.type == 'Continue')
+                else if (element.type == 'Continue') {
+                    condition = this.condition.execute(env);
                     continue;
+                }
+                else
+                    return element;
             }
             condition = this.condition.execute(env);
             if (condition.type != Retorno_1.Type.BOOLEAN) {

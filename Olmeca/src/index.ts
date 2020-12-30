@@ -27,7 +27,7 @@ try {
         try {
             const actual = instr.execute(env);
             if(actual != null || actual != undefined){
-                errores.push(new Error_(actual.line, actual.column, 'Semantico', actual.type + ' fuera de un ciclo'));
+                errores.push(new Error_(actual.line, actual.column, 'Semantico', actual.type + ' fuera de un ambito correcto'));
             }
         } catch (error) {
             errores.push(error);  

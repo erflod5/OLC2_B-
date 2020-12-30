@@ -45,6 +45,10 @@ var Relational = /** @class */ (function (_super) {
             var result = leftValue.value != rightValue.value;
             return { value: result, type: Retorno_1.Type.BOOLEAN };
         }
+        else if (this.type == RelationalOption.GREATER) {
+            var result = leftValue.value > rightValue.value;
+            return { value: result, type: Retorno_1.Type.BOOLEAN };
+        }
         return { value: 0, type: Retorno_1.Type.NUMBER };
     };
     return Relational;

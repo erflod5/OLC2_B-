@@ -5,6 +5,7 @@
 [a-zA-Z_]\w*                  { return 'id'; }
 .                             { return yytext; }
 /lex
+
 %%
 D 
   : C T L {
@@ -13,8 +14,12 @@ D
   ;
 
 C
-  : global
-  | local
+  : global{
+    $$ = 'GLOBAL';
+  }
+  | local{
+    $$ = 'LOCAL';
+  }
   ; 
   
 T
@@ -40,3 +45,14 @@ L
 ;
 
 %%
+
+/*
+
+global integer a,b,c
+
+Variables reconocidas:  [
+  { id: 'a', tipo: 'INT', ambito: 'GLOBAL' },
+  { id: 'b', tipo: 'INT', ambito: 'GLOBAL' },
+  { id: 'c', tipo: 'INT', ambito: 'GLOBAL' }
+]
+*/

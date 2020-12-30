@@ -3,7 +3,8 @@ export enum Type{
     STRING = 1,
     BOOLEAN = 2,
     NULL = 3,
-    ARRAY = 4
+    ARRAY = 4,
+    STRUCT = 5
 }
 
 export type Retorno ={

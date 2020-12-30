@@ -13,26 +13,20 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Literal = void 0;
-var Expression_1 = require("../Abstract/Expression");
-var Retorno_1 = require("../Abstract/Retorno");
-var Literal = /** @class */ (function (_super) {
-    __extends(Literal, _super);
-    function Literal(value, line, column, type) {
+exports.Return = void 0;
+var Instruction_1 = require("../Abstract/Instruction");
+var Return = /** @class */ (function (_super) {
+    __extends(Return, _super);
+    function Return(expr, line, column) {
         var _this = _super.call(this, line, column) || this;
-        _this.value = value;
-        _this.type = type;
+        _this.expr = expr;
         return _this;
     }
-    Literal.prototype.execute = function () {
-        if (this.type <= 1)
-            return { value: Number(this.value), type: Retorno_1.Type.NUMBER };
-        else if (this.type == 2)
-            return { value: this.value, type: Retorno_1.Type.STRING };
-        else
-            return { value: null, type: Retorno_1.Type.NULL };
+    Return.prototype.execute = function (environment) {
+        var value = this.expr.execute(environment);
+        return { line: this.line, column: this.column, type: 'Return', value: value };
     };
-    return Literal;
-}(Expression_1.Expression));
-exports.Literal = Literal;
-//# sourceMappingURL=Literal.js.map
+    return Return;
+}(Instruction_1.Instruction));
+exports.Return = Return;
+//# sourceMappingURL=Return.js.map

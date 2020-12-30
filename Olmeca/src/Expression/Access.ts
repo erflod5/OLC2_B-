@@ -1,7 +1,6 @@
 import { Expression } from "../Abstract/Expression";
 import { Environment } from "../Symbol/Environment";
 import { Retorno } from "../Abstract/Retorno";
-import { type } from "os";
 
 export class Access extends Expression{
 

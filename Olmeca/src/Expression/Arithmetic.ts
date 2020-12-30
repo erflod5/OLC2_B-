@@ -25,7 +25,7 @@ export class Arithmetic extends Expression{
         
         if(this.type == ArithmeticOption.PLUS){
             if(tipoDominante == Type.STRING)
-                result = {value : (leftValue.value.toString() + rightValue.value.toString()), type : Type.NUMBER};
+                result = {value : (leftValue.value.toString() + rightValue.value.toString()), type : Type.STRING};
             else if(tipoDominante == Type.NUMBER)
                 result = {value : (leftValue.value + rightValue.value), type : Type.NUMBER};
             else

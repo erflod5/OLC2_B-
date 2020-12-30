@@ -10,7 +10,9 @@ export class Literal extends Expression{
     public execute() : Retorno{
         if(this.type <= 1)
             return {value : Number(this.value), type : Type.NUMBER};
-        else
+        else if(this.type == 2)
             return {value : this.value, type : Type.STRING};
+        else
+            return {value : null, type : Type.NULL};
     }
 }

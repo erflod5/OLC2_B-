@@ -40,7 +40,7 @@ var Arithmetic = /** @class */ (function (_super) {
         var tipoDominante = this.tipoDominante(leftValue.type, rightValue.type);
         if (this.type == ArithmeticOption.PLUS) {
             if (tipoDominante == Retorno_1.Type.STRING)
-                result = { value: (leftValue.value.toString() + rightValue.value.toString()), type: Retorno_1.Type.NUMBER };
+                result = { value: (leftValue.value.toString() + rightValue.value.toString()), type: Retorno_1.Type.STRING };
             else if (tipoDominante == Retorno_1.Type.NUMBER)
                 result = { value: (leftValue.value + rightValue.value), type: Retorno_1.Type.NUMBER };
             else

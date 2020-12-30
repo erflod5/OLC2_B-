@@ -14,7 +14,7 @@ export class Function extends Instruction{
 }
 
 /*
-    function fact(n : numbero){
+    function fact(n : numero){
         if(n == 0)
             return 1;
         else

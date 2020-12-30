@@ -5,6 +5,8 @@
     const {Access} = require('../Expression/Access');
     const {Literal} = require('../Expression/Literal');
     const {CallExpr} = require('../Expression/CallExpr');
+    const {AccessId} = require('../Expression/AccessId'); // print(a.b.c);
+    const {NewStruct} = require('../Expression/NewStruct'); // {a : 10, b : "hola"}
     const {If} = require('../Instruction/If');
     const {Return} = require('../Instruction/Return');
     const {Print} = require('../Instruction/Print');
@@ -14,6 +16,7 @@
     const {Break} = require('../Instruction/Break');
     const {Call} = require('../Instruction/Call');
     const {Function} = require('../Instruction/Function');
+    const {AssignmentStruct} = require('../Instruction/AssignmentStruct'); //a.b.c = 10;
 %}
 
 %lex
@@ -30,6 +33,8 @@ string  (\"[^"]*\")
 "*"                     return '*'
 "/"                     return '/'
 ";"                     return ';'
+":"                     return ':'
+"."                     return '.'
 ","                     return ','
 "-"                     return '-'
 "+"                     return '+'
@@ -56,6 +61,7 @@ string  (\"[^"]*\")
 "break"                 return 'BREAK'
 "function"              return 'FUNCTION'
 "return"                return "RETURN"
+"null"                  return "NULL"
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*	return 'ID';
 <<EOF>>		            return 'EOF'
 
@@ -68,6 +74,7 @@ string  (\"[^"]*\")
 %left '>=', '<=', '<', '>'
 %left '+' '-'
 %left '*' '/'
+%left '.'
 
 %start Init
 
@@ -164,6 +171,19 @@ Declaration
     : ID '=' Expr ';'{
         $$ = new Declaration($1, $3, @1.first_line, @1.first_column);
     }
+    | ListaIds '=' Expr ';' {
+        $$ = new AssignmentStruct($1, $3);
+    }
+;
+
+ListaIds
+    : ListaIds '.' ID {
+        $1.push($3);
+        $$ = $1;
+    }
+    | ID '.' ID {
+        $$ = [$1, $3];
+    }
 ;
 
 IfSt
@@ -247,6 +267,10 @@ Expr
     {
         $$ = new Relational($1, $3,RelationalOption.NOTEQUAL ,@1.first_line, @1.first_column);
     }
+    | Expr '.' ID
+    {
+        $$ = new AccessId($1, $3, @1.first_line, @1.first_column);
+    }
     | F
     {
         $$ = $1;
@@ -257,8 +281,26 @@ Expr
     | ID '(' ListaExpr ')' {
         $$ = new CallExpr($1, $3, @1.first_line, @1.first_column);
     }
+    | '{' Attributes '}' {
+        $$ = new NewStruct($2, @1.first_line, @1.first_column);
+    }
 ;
 
+Attributes
+    : Attributes ',' Attribute {
+        $1.push($3);
+        $$ = $1;
+    }
+    | Attribute {
+        $$ = [$1];
+    }
+;
+
+Attribute
+    : ID ':' Expr {
+        $$ = {id: $1, value: $3};
+    }
+;
 
 F   : '(' Expr ')'
     { 
@@ -278,5 +320,8 @@ F   : '(' Expr ')'
     }
     | ID{
         $$ = new Access($1, @1.first_line, @1.first_column);
+    }
+    | NULL{
+        $$ = new Literal(null, @1.first_line, @1.first_column, 3);
     }
 ;

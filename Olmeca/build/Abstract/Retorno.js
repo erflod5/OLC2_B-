@@ -8,5 +8,6 @@ var Type;
     Type[Type["BOOLEAN"] = 2] = "BOOLEAN";
     Type[Type["NULL"] = 3] = "NULL";
     Type[Type["ARRAY"] = 4] = "ARRAY";
+    Type[Type["STRUCT"] = 5] = "STRUCT";
 })(Type = exports.Type || (exports.Type = {}));
 //# sourceMappingURL=Retorno.js.map

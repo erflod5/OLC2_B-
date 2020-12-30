@@ -31,7 +31,7 @@ var Function = /** @class */ (function (_super) {
 }(Instruction_1.Instruction));
 exports.Function = Function;
 /*
-    function fact(n : numbero){
+    function fact(n : numero){
         if(n == 0)
             return 1;
         else
