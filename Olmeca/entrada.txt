@@ -1,15 +1,14 @@
-a = {
-    b : {
-        c : {
-            d : 10
-        }
-    }
-};
+a = [1, 2, 3, 4, 5];
+b = [
+    [1, 2, 3],
+    [4, 5, 6]
+];
 
-function fun1(param1){
-    param1.b.c.d = "Erik";
-}
+print(a[2]);
+print(b[1][0]);
 
-print(a.b.c.d);
-fun1(a);
-print(a.b.c.d);
+
+b[0][0] = 13234;
+
+
+print(b[0][0]);

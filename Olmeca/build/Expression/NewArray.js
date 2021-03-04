@@ -13,26 +13,28 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AccessId = void 0;
+exports.NewArray = void 0;
 var Expression_1 = require("../Abstract/Expression");
 var Retorno_1 = require("../Abstract/Retorno");
-var AccessId = /** @class */ (function (_super) {
-    __extends(AccessId, _super);
-    function AccessId(left, id, line, column) {
+var Array_1 = require("../Symbol/Array");
+var Symbol_1 = require("../Symbol/Symbol");
+var NewArray = /** @class */ (function (_super) {
+    __extends(NewArray, _super);
+    function NewArray(listExpr, line, column) {
         var _this = _super.call(this, line, column) || this;
-        _this.left = left;
-        _this.id = id;
+        _this.listExpr = listExpr;
         return _this;
     }
-    AccessId.prototype.execute = function (environment) {
-        var left = this.left.execute(environment);
-        if (left.type == Retorno_1.Type.STRUCT) {
-            var value = left.value.getAttribute(this.id);
-            return { value: value.valor, type: value.type };
-        }
-        throw new Error("La variable no existe " + this.line + " " + this.column);
+    NewArray.prototype.execute = function (environment) {
+        var array = new Array_1.Array();
+        var index = 0;
+        this.listExpr.forEach(function (expr) {
+            var value = expr.execute(environment);
+            array.setAttribute(index++, new Symbol_1.Symbol(value.value, '', value.type));
+        });
+        return { value: array, type: Retorno_1.Type.ARRAY };
     };
-    return AccessId;
+    return NewArray;
 }(Expression_1.Expression));
-exports.AccessId = AccessId;
-//# sourceMappingURL=AccessId.js.map
+exports.NewArray = NewArray;
+//# sourceMappingURL=NewArray.js.map

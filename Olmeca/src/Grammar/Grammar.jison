@@ -4,6 +4,8 @@
     const {Relational, RelationalOption} = require('../Expression/Relational');
     const {Access} = require('../Expression/Access');
     const {Literal} = require('../Expression/Literal');
+    const {NewArray} = require('../Expression/NewArray');
+    const {AccessArray} = require('../Expression/AccessArray');
     const {CallExpr} = require('../Expression/CallExpr');
     const {AccessId} = require('../Expression/AccessId'); // print(a.b.c);
     const {NewStruct} = require('../Expression/NewStruct'); // {a : 10, b : "hola"}
@@ -54,6 +56,8 @@ string  (\"[^"]*\")
 ")"                     return ')' 
 "{"                     return '{'
 "}"                     return '}'
+"["                     return '['
+"]"                     return ']'
 "if"                    return 'IF'
 "else"                  return 'ELSE'
 "while"                 return 'WHILE'
@@ -74,7 +78,7 @@ string  (\"[^"]*\")
 %left '>=', '<=', '<', '>'
 %left '+' '-'
 %left '*' '/'
-%left '.'
+%left '.' '[' ']'
 
 %start Init
 
@@ -171,17 +175,24 @@ Declaration
     : ID '=' Expr ';'{
         $$ = new Declaration($1, $3, @1.first_line, @1.first_column);
     }
-    | ListaIds '=' Expr ';' {
+    | AccessList '=' Expr ';' {
         $$ = new AssignmentStruct($1, $3);
     }
 ;
 
-ListaIds
-    : ListaIds '.' ID {
+AccessList
+    : AccessList '.' ID {
+        $1.push($3);
+        $$ = $1;
+    }
+    | AccessList '[' Expr ']' {
         $1.push($3);
         $$ = $1;
     }
     | ID '.' ID {
+        $$ = [$1, $3];
+    }
+    | ID '[' Expr ']' {
         $$ = [$1, $3];
     }
 ;
@@ -283,6 +294,12 @@ Expr
     }
     | '{' Attributes '}' {
         $$ = new NewStruct($2, @1.first_line, @1.first_column);
+    }
+    | '[' ListaExpr ']' {
+        $$ = new NewArray($2, @1.first_line, @1.first_column);
+    }
+    | Expr '[' Expr ']' {
+        $$ = new AccessArray($1, $3, @1.first_line, @1.first_column);
     }
 ;
 

@@ -13,26 +13,28 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AccessId = void 0;
+exports.AccessArray = void 0;
 var Expression_1 = require("../Abstract/Expression");
 var Retorno_1 = require("../Abstract/Retorno");
-var AccessId = /** @class */ (function (_super) {
-    __extends(AccessId, _super);
-    function AccessId(left, id, line, column) {
+var AccessArray = /** @class */ (function (_super) {
+    __extends(AccessArray, _super);
+    function AccessArray(anterior, index, line, column) {
         var _this = _super.call(this, line, column) || this;
-        _this.left = left;
-        _this.id = id;
+        _this.anterior = anterior;
+        _this.index = index;
         return _this;
     }
-    AccessId.prototype.execute = function (environment) {
-        var left = this.left.execute(environment);
-        if (left.type == Retorno_1.Type.STRUCT) {
-            var value = left.value.getAttribute(this.id);
-            return { value: value.valor, type: value.type };
-        }
-        throw new Error("La variable no existe " + this.line + " " + this.column);
+    AccessArray.prototype.execute = function (environment) {
+        var anterior = this.anterior.execute(environment);
+        if (anterior.type != Retorno_1.Type.ARRAY)
+            throw new Error("No es un arreglo");
+        var index = this.index.execute(environment);
+        if (index.type != Retorno_1.Type.NUMBER)
+            throw new Error("El indice no es un numero");
+        var value = anterior.value.getAttribute(index.value);
+        return { type: value.type, value: value.valor };
     };
-    return AccessId;
+    return AccessArray;
 }(Expression_1.Expression));
-exports.AccessId = AccessId;
-//# sourceMappingURL=AccessId.js.map
+exports.AccessArray = AccessArray;
+//# sourceMappingURL=AccessArray.js.map
