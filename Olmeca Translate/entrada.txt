@@ -1,0 +1,13 @@
+function fun1(a){
+    b = 10;
+    function fun2(c){
+        d = 200;
+        function fun3(e){
+            print(1);
+            fun3 = 20;
+        }
+        fun3(10);
+    }
+    fun2(1);
+}
+print(3);
